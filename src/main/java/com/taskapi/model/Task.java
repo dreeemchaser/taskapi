@@ -1,14 +1,7 @@
 package com.taskapi.model;
 
 import jakarta.persistence.*;
-import jdk.jfr.Enabled;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
-
-import java.time.LocalDate;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -37,15 +30,10 @@ public class Task {
     @Column(name = "modified_task", nullable = true, updatable = true)
     private LocalDateTime modifiedAt;
 
-    /*
-        What does this do?
-        ->
-     */
     @PrePersist
     private void onCreate(){
         createAt = LocalDateTime.now();
         modifiedAt = null;
     }
-
 
 }
