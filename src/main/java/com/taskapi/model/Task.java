@@ -1,5 +1,6 @@
 package com.taskapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ID;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -25,14 +26,24 @@ public class Task {
     private Boolean completed = false;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
 
-    @Column(name = "modified_task", nullable = true, updatable = true)
+    @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    User user;
+
+    @PreUpdate
+    private void preUpdate(){
+        modifiedAt = LocalDateTime.now();
+    }
 
     @PrePersist
     private void onCreate(){
-        createAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
         modifiedAt = null;
     }
 
